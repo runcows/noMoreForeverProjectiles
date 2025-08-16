@@ -1,0 +1,45 @@
+{
+  "type": "minecraft:multi_action",
+  "title": "Delete Stray Projectiles",
+  "body": [
+    {
+      "type": "minecraft:plain_message",
+      "contents": "Configurable max distance for projectiles that just shoot straight forever.\n\n\nAffects Wither Skulls, Wind Charges, Fireballs, Small Fireballs, and Dragon Fireballs.\n\nCan be disabled for each projectile type.",
+      "width": 300
+    },
+    {
+      "type": "minecraft:plain_message",
+      "contents": {
+        "text": "v1.0.0\nBy runcows",
+        "color": "gray"
+      },
+      "width": 300
+    }
+  ],
+  "actions": [
+    {
+      "label": "Issues",
+      "action": {
+        "type": "open_url",
+        "url": "https://github.com/runcows/deleteStrayProjectilesDatapack/issues"
+      }
+    },
+    {
+      "label": "Config...",
+      "action": {
+        "type": "minecraft:run_command",
+        "command": "function rc_stray_projectiles:show_config with storage rc_stray_projectiles:storage config"
+      }
+    }
+  ],
+  "exit_action": {
+    "action": {
+      "type": "show_dialog",
+      "dialog": "smithed:data_packs"
+    },
+    "label": {
+      "translate": "gui.back"
+    },
+    "width": 200
+  }
+}

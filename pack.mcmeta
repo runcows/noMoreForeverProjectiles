@@ -1,0 +1,14 @@
+{
+    "id": "rc_stray_wither_skulls",
+    "pack":{
+        "pack_format": 81,
+        "description": [
+            "Delete Stray Projectiles",
+            "\n",
+            {
+                "text": "runcows",
+                "color": "#da3eb3"
+            }
+        ]
+    }
+}
