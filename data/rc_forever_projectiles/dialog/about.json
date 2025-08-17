@@ -1,6 +1,6 @@
 {
   "type": "minecraft:multi_action",
-  "title": "Delete Stray Projectiles",
+  "title": "No More Forever Projectiles",
   "body": [
     {
       "type": "minecraft:plain_message",
@@ -21,14 +21,14 @@
       "label": "Issues",
       "action": {
         "type": "open_url",
-        "url": "https://github.com/runcows/deleteStrayProjectilesDatapack/issues"
+        "url": "https://github.com/runcows/noMoreForeverProjectiles/issues"
       }
     },
     {
       "label": "Config...",
       "action": {
         "type": "minecraft:run_command",
-        "command": "function rc_stray_projectiles:show_config with storage rc_stray_projectiles:storage config"
+        "command": "function rc_forever_projectiles:show_config with storage rc_forever_projectiles:storage config"
       }
     }
   ],

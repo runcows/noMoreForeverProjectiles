@@ -1,10 +1,10 @@
 # run from dialog: about
 # with... all of those macros
-# | storage rc_stray_projectiles:storage config
+# | storage rc_forever_projectiles:storage config
 
 $dialog show @s {\
   "type": "minecraft:multi_action",\
-  "title": "Delete Stray Projectiles Config",\
+  "title": "No More Forever Projectiles Config",\
   "inputs": [\
     {\
       "type": "minecraft:boolean",\
@@ -124,14 +124,14 @@ $dialog show @s {\
       },\
       "action": {\
         "type": "show_dialog",\
-        "dialog": "rc_stray_projectiles:about"\
+        "dialog": "rc_forever_projectiles:about"\
       }\
     },\
     {\
       "label": "Confirm",\
       "action": {\
         "type": "minecraft:dynamic/run_command",\
-        "template": "function rc_stray_projectiles:set_config {wither_skull_deletion_enabled:$(wither_skull_deletion_enabled),wither_skull_max_distance:$(wither_skull_max_distance),wind_charge_deletion_enabled:$(wind_charge_deletion_enabled),wind_charge_max_distance:$(wind_charge_max_distance),fireball_deletion_enabled:$(fireball_deletion_enabled),fireball_max_distance:$(fireball_max_distance),small_fireball_deletion_enabled:$(small_fireball_deletion_enabled),small_fireball_max_distance:$(small_fireball_max_distance),dragon_fireball_deletion_enabled:$(dragon_fireball_deletion_enabled),dragon_fireball_max_distance:$(dragon_fireball_max_distance)}"\
+        "template": "function rc_forever_projectiles:set_config {wither_skull_deletion_enabled:$(wither_skull_deletion_enabled),wither_skull_max_distance:$(wither_skull_max_distance),wind_charge_deletion_enabled:$(wind_charge_deletion_enabled),wind_charge_max_distance:$(wind_charge_max_distance),fireball_deletion_enabled:$(fireball_deletion_enabled),fireball_max_distance:$(fireball_max_distance),small_fireball_deletion_enabled:$(small_fireball_deletion_enabled),small_fireball_max_distance:$(small_fireball_max_distance),dragon_fireball_deletion_enabled:$(dragon_fireball_deletion_enabled),dragon_fireball_max_distance:$(dragon_fireball_max_distance)}"\
       }\
     }\
   ]\

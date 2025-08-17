@@ -1,9 +1,9 @@
 {
-    "id": "rc_stray_wither_skulls",
+    "id": "rc_forever_projectiles",
     "pack":{
         "pack_format": 81,
         "description": [
-            "Delete Stray Projectiles",
+            "No More Forever Projectiles",
             "\n",
             {
                 "text": "runcows",
