@@ -4,10 +4,10 @@
         "pack_format": 81,
         "supported_formats": {
             "min_inclusive": 81,
-            "max_inclusive": 81
+            "max_inclusive": 94
         },
         "min_format": 81,
-        "max_format": 88,
+        "max_format": [94,1],
         "description": [
             "No More Forever Projectiles",
             "\n",
