@@ -1,4 +1,5 @@
-# scheduled from init & self
+# scheduled from init
+# scheduled from self
 # run from set_config
 
 schedule function rc_forever_projectiles:calculate_config 100t

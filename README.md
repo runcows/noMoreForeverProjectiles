@@ -1,3 +1,4 @@
+# <img src="pack.svg" alt="Icon" width="35"><!-- $localAssetToURL --> No More Forever Projectiles<!--$headerTitle--><!--$pmc:delete-->
 Configurable max distance for projectiles that just shoot straight forever. 
 
 No more Wither Skulls stuck in the stratosphere!
@@ -11,9 +12,12 @@ No more Wither Skulls stuck in the stratosphere!
 ## Configuration
 Can be configured and disabled for each projectile type by OPs in a dialog accessible by the Pause Menu.
 ##### When Deletion is enabled for a projectile, it will be deleted after traveling the distance specified in the Max Distance (+/- about 5 blocks). 
-![Configuration Screen](https://cdn.modrinth.com/data/cached_images/49911d95540fafec7751fbe41819ec8732463808_0.webp)
+<img src="config_screenshot.png" alt="Config Screenshot"> <!--$localAssetToURL--> <!--$modrinth:replaceWithVideo--> <!--$pmc:delete-->
 
+## Known Issues
 If you can't find the options screen in the pause menu, there might be something overriding it. You can alternatively access them by running the following command as an OP
 ```mcfunction
 /dialog show @s rc_forever_projectiles:about
 ```
+
+Realms servers are not supported.

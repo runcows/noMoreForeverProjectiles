@@ -1,4 +1,4 @@
-# as rc_forever_projectiles.origin  item_display
+# as 72756E63-6F77-73-1D-F04CE104D (forceloaded item_display)
 # with {temp0, temp1, temp2}
 # run from get_distance
 

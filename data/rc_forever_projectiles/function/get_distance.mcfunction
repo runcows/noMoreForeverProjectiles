@@ -1,12 +1,12 @@
 # @s = projectile to track
-# at 0. 0 0. in overworld
+# at undefined
 # run from tick
 
 # add new motion to distance
 data modify storage rc_forever_projectiles:storage temp.temp0 set from entity @s Motion[0]
 data modify storage rc_forever_projectiles:storage temp.temp1 set from entity @s Motion[1]
 data modify storage rc_forever_projectiles:storage temp.temp2 set from entity @s Motion[2]
-execute as @e[type=minecraft:item_display,tag=rc_forever_projectiles.origin,limit=1,distance=..0.1] run \
+execute as 72756E63-6F77-73-1D-F04CE104D run \
   function rc_forever_projectiles:modify with storage rc_forever_projectiles:storage temp
 
 scoreboard players operation $temp_motion rc_forever_projectiles.data *= #5 rc_forever_projectiles.data
