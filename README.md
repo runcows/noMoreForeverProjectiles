@@ -10,7 +10,7 @@ No more Wither Skulls stuck in the stratosphere!
 - Small Fireballs
 - Dragon Fireballs
 ## Configuration
-Can be configured and disabled for each projectile type by OPs in a dialog accessible by the Pause Menu.
+Can be configured and disabled for each projectile type by OPs in a dialog accessible by the Pause Menu, through the `Data Packs...` button.
 ##### When Deletion is enabled for a projectile, it will be deleted after traveling the distance specified in the Max Distance (+/- about 5 blocks). 
 <img src="https://raw.githubusercontent.com/runcows/noMoreForeverProjectiles/main/config_screenshot.png" alt="Configuration Screen"> <!--$localAssetToURL--> <!--$modrinth:replaceWithVideo--> <!--$pmc:delete-->
 
