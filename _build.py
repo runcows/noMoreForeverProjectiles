@@ -3,9 +3,9 @@ import os
 import zipfile, shutil
 
 __name__ = "noMoreForeverProjectiles"
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
-MC_VERSION_RANGE = "1.21.8-11"
+MC_VERSION_RANGE = "26.1"
 
 
 ######################################
