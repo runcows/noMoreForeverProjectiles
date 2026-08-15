@@ -1,13 +1,13 @@
 from beet import Context
 from beet.contrib.format_json import format_json
 from bolt import Module
-# from github import Github
+from github import Github
 from importlib import resources
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import json
 import os
 from pathlib import Path
-# import requests
+import requests
 import shutil
 import zipfile
 
