@@ -1,0 +1,185 @@
+from typing import Any
+import re
+
+v_major, v_minor, v_patch = ctx.project_version.split(".")
+
+append function_tag load:load:
+    values: 
+        -   (./init)
+
+# ascii runcows = 114, 117, 110, 99, 111, 119, 115
+# HEX = 72 75 6E 63 6F 77 73
+# multiply each by the characters remaining
+# 7*114 + 6*117 + 5*110 + 4*99 + 3*111 + 2*119 + 1*115  =   3132
+forceloaded_marker = "72756E63-6F77-73-1D-F04CE104D"
+int_runcows = 3132
+
+class Projectile:
+    selector_type: str
+    toggle_config_score: str
+    toggle_config_path: str
+    distance_config_score: str
+    distance_config_path: str
+
+    def __init__(self, id):
+        self.name = id
+        self.display_name = id.replace('_',' ').title()
+        self.selector_type = f"minecraft:{id}"
+
+        self.toggle_config_score = f"${id}_deletion_enabled"
+        self.toggle_config_path = f"config.config_{id}_enabled"
+        self.toggle_config_macro = f"$({id}_deletion_enabled)"
+        self.toggle_config_key = f"{id}_deletion_enabled"
+
+        self.distance_config_score = f"${id}_max_distance"
+        self.distance_config_path = f"config.config_{id}_distance"
+        self.distance_config_macro = f"$({id}_max_distance)"
+        self.distance_config_key = f"{id}_max_distance"
+
+        self.config_distance_macro = f"$(config_{id}_distance)"
+        self.config_enabled_macro = f"$(config_{id}_enabled)"
+
+projectiles = {}
+for projectile in ctx.meta.nmfp.affected_projectiles:
+    projectiles[projectile] = Projectile(projectile)
+
+
+function ./init:
+    scoreboard players set rc_forever_projectiles load.status v_major
+    scoreboard players set rc_forever_projectiles_minor load.status v_minor
+
+    forceload add 29999999 int_runcows
+    # UUID = 72756E63-6F77-73-1D-F04CE104D      ^ ABOVE
+    summon item_display 29999999 ~ int_runcows {Tags:["rc_forever_projectiles.forceload_item_display"],UUID:[I;1920298595,1870069875,1900559,80613453]}
+
+    scoreboard objectives add rc_forever_projectiles.config dummy
+    scoreboard objectives add rc_forever_projectiles.data dummy
+    scoreboard objectives add rc_forever_projectiles.distance dummy
+
+    unless score version rc_forever_projectiles.data matches 1.. run function ./reset_config:
+        scoreboard players set version rc_forever_projectiles.data 1
+        for projectile in projectiles.values():
+            raw f"# {projectile.display_name}"
+            scoreboard players set projectile.toggle_config_score rc_forever_projectiles.config 1
+            scoreboard players set projectile.distance_config_score rc_forever_projectiles.config 256
+        
+        raw # constants
+        scoreboard players set #5 rc_forever_projectiles.data 5
+        scoreboard players set #1000 rc_forever_projectiles.data 1000
+        
+        raw # store config
+        storage_config_macros_list = []
+        for projectile in projectiles.values():
+            storage_config_macros_list.append(
+                f"{projectile.toggle_config_key}:'{projectile.toggle_config_macro}',{projectile.distance_config_key}:'{projectile.distance_config_macro}'"
+            )
+        storage_config_macros = "{" + ",".join(storage_config_macros_list) + "}"
+        raw f"data modify storage rc_forever_projectiles:storage config merge value {storage_config_macros}"
+
+    schedule function ./tick 1t
+    schedule function ./calculate_config 2t
+
+function ./tick:
+    schedule function ~/ 5t
+
+    for projectile in projectiles.values():
+        name = projectile.name
+        toggle_config_score = projectile.toggle_config_score
+        distance_config_score = projectile.distance_config_score
+        selector_type = projectile.selector_type
+
+        PATH = ./get_distance + f"/{name}"
+        
+        if score toggle_config_score rc_forever_projectiles.config matches 1 as @e[type=selector_type,tag=!smithed.entity] run function PATH:
+            data modify storage rc_forever_projectiles:storage temp.temp0 set from entity @s Motion[0]
+            data modify storage rc_forever_projectiles:storage temp.temp1 set from entity @s Motion[1]
+            data modify storage rc_forever_projectiles:storage temp.temp2 set from entity @s Motion[2]
+            as forceloaded_marker run function ./modify with storage rc_forever_projectiles:storage temp:
+                $data modify entity @s transformation set value [$(temp0)f,0f,0f,0f,$(temp1)f,0f,0f,0f,$(temp2)f,0f,0f,0f,0f,0f,0f,1f]
+                store result score $temp_motion rc_forever_projectiles.data run data get entity @s transformation.scale[0] 1000
+            scoreboard players operation $temp_motion rc_forever_projectiles.data *= #5 rc_forever_projectiles.data
+            scoreboard players operation @s rc_forever_projectiles.distance += $temp_motion rc_forever_projectiles.data
+            if score @s rc_forever_projectiles.distance > distance_config_score rc_forever_projectiles.data run kill @s
+
+function ./calculate_config:
+    schedule function ~/ 100t
+
+    for projectile in projectiles.values():
+        name = projectile.name
+        toggle_config_score = projectile.toggle_config_score
+        distance_config_score = projectile.distance_config_score
+        toggle_config_path = projectile.toggle_config_path
+        distance_config_path = projectile.distance_config_path
+
+        raw f"# {name}"
+        store result storage rc_forever_projectiles:storage distance_config_path int 1 run scoreboard players operation distance_config_score rc_forever_projectiles.data = distance_config_score rc_forever_projectiles.config
+        scoreboard players operation distance_config_score rc_forever_projectiles.data *= #1000 rc_forever_projectiles.data
+
+        if score toggle_config_score rc_forever_projectiles.config matches 1 run data modify storage rc_forever_projectiles:storage toggle_config_path set value "true"
+        unless score toggle_config_score rc_forever_projectiles.config matches 1 run data modify storage rc_forever_projectiles:storage toggle_config_path set value "false"
+
+function ./set_config:
+    for projectile in projectiles.values():
+        name = projectile.name
+        toggle_config_score = projectile.toggle_config_score
+        toggle_config_macro = projectile.toggle_config_macro
+        distance_config_score = projectile.distance_config_score
+        distance_config_macro = projectile.distance_config_macro
+
+        raw f"# {name}"
+        raw f"$scoreboard players set {toggle_config_score} rc_forever_projectiles.config {toggle_config_macro}"
+        raw f"$scoreboard players set {distance_config_score} rc_forever_projectiles.config {distance_config_macro}"
+    raw # calc
+    function ./calculate_config
+
+function ./show_config:
+    Config_Options = []
+    Config_Macros_List = []
+    for projectile in projectiles.values():
+        Config_Options.append({
+            "type": "minecraft:boolean",
+            "key": projectile.toggle_config_key,
+            "label": {"text": (projectile.display_name + " Deletion")},
+            "initial": f"%UNQUOTE%{projectile.config_enabled_macro}%END%", # Messy because this needs to be unquoted
+            "on_true": "1",
+            "on_false": "0"
+        })
+        Config_Options.append({
+            "type": "minecraft:number_range",
+            "key": projectile.distance_config_key,
+            "label": {"text": (projectile.display_name + " Max Distance")},
+            "start": 0,
+            "end": 1024,
+            "step": 4,
+            "initial": f"%UNQUOTE%{projectile.config_distance_macro}%END%", # Messy because this needs to be unquoted
+        })
+        Config_Macros_List.append(
+            f"{projectile.toggle_config_key}:{projectile.toggle_config_macro},{projectile.distance_config_key}:{projectile.distance_config_macro}"
+        )
+    Config_Macros = ",".join(Config_Macros_List)
+
+    dialog_contents = {
+        "type": "minecraft:multi_action",
+        "title": "No More Forever Projectiles Config",
+        "inputs": Config_Options,
+        "actions": [
+            {
+                "label": {"translate": "gui.back"},
+                "action": {
+                    "type": "show_dialog",
+                    "dialog": (./about)
+                }
+            },
+            {
+                "label": "Confirm",
+                "action": {
+                    "type": "minecraft:dynamic/run_command",
+                    "template": ("function " + ./set_config + " {" + Config_Macros + "}")
+                }
+            }
+        ]
+    }
+    dialog_command = f"$dialog show @s {dialog_contents}"
+    pattern = r'(["\'])%UNQUOTE%(.*?)%END%\1'
+    dialog_command = re.sub(pattern, r'\2', dialog_command)
+    raw f"{dialog_command}"

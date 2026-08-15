@@ -1,0 +1,11 @@
+function ~/kill_old_item_display:
+    append function_tag load:post_load:
+        values: 
+            -   (~/)
+    
+    schedule function ~/delayed_1 5s:
+        store result score #origin_loaded rc_forever_projectiles.data run forceload query 0 0
+        if score #origin_loaded rc_forever_projectiles.data matches 0 run forceload add 0 0
+    schedule function ~/delayed_2 10s:
+        positioned 0. 0 0. run kill @e[type=item_display,tag=rc_forever_projectiles.origin,distance=..0.1,limit=1]
+        if score #origin_loaded rc_forever_projectiles.data matches 0 run forceload remove 0 0

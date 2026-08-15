@@ -6,6 +6,7 @@ No more Wither Skulls stuck in the stratosphere!
 ## Affected Entities
 - Wither Skulls
 - Wind Charges
+- Breeze Wind Charges
 - Fireballs
 - Small Fireballs
 - Dragon Fireballs
