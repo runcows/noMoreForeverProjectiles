@@ -1,0 +1,13 @@
+[project]
+dependencies = [
+    "beet>=0.116.0",
+    "bolt>=0.50.1",
+    "bolt-native-macros>=0.5.1",
+    "jinja2>=3.1.6",
+    "mecha>=0.104.0"
+]
+description = "The NMFP Datapack Github Repo"
+name = "No_More_Forever_Projectiles"
+readme = "README.md"
+requires-python = ">=3.14"
+version = "0.0.0"

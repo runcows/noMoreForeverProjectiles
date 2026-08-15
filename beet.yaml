@@ -1,0 +1,55 @@
+id: rc_forever_projectiles
+name: No More Forever Projectiles
+author: runcows
+description: Arrows and Tridents can break more blocks!
+
+version: 1.2.0
+
+output: out
+
+data_pack:
+  load: 
+    # data: src/data
+    data/rc_forever_projectiles/modules: src/modules
+  name: nmfp_dev
+  zipped: false
+
+require:
+  - plugins.output.clear
+  - beet.contrib.model_merging
+  - beet.contrib.copy_files
+  - bolt
+  - bolt_native_macros
+
+pipeline:
+  - plugins.write_mcmeta
+  - mecha
+  # no minify_json, that's handled by plugins.output
+  - plugins.output
+
+meta:
+  supported_versions: [
+    "26.1",
+    "26.1.1",
+    "26.1.2",
+    "26.2"
+  ]
+  copy_files:
+    data_pack:
+      LICENSE: LICENSE
+      pack.png: pack.png
+  mecha:
+    formatting: 
+      # layout: preserve
+      nbt_compact: True
+  bolt:
+    entrypoint: ["*"]
+  nmfp:
+    affected_projectiles:
+      - wither_skull
+      - wind_charge
+      - breeze_wind_charge
+      - fireball
+      - small_fireball
+      - dragon_fireball
+
