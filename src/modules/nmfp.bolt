@@ -15,12 +15,6 @@ forceloaded_item_display = "72756E63-6F77-73-1D-F04CE104D"
 int_runcows = 3132
 
 class Projectile:
-    selector_type: str
-    toggle_config_score: str
-    toggle_config_path: str
-    distance_config_score: str
-    distance_config_path: str
-
     def __init__(self, id):
         self.name = id
         self.display_name = id.replace('_',' ').title()
