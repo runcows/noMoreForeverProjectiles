@@ -11,7 +11,7 @@ append function_tag load:load:
 # HEX = 72 75 6E 63 6F 77 73
 # multiply each by the characters remaining
 # 7*114 + 6*117 + 5*110 + 4*99 + 3*111 + 2*119 + 1*115  =   3132
-forceloaded_marker = "72756E63-6F77-73-1D-F04CE104D"
+forceloaded_item_display = "72756E63-6F77-73-1D-F04CE104D"
 int_runcows = 3132
 
 class Projectile:
@@ -94,7 +94,7 @@ function ./tick:
             data modify storage rc_forever_projectiles:storage temp.temp0 set from entity @s Motion[0]
             data modify storage rc_forever_projectiles:storage temp.temp1 set from entity @s Motion[1]
             data modify storage rc_forever_projectiles:storage temp.temp2 set from entity @s Motion[2]
-            as forceloaded_marker run function ./modify with storage rc_forever_projectiles:storage temp:
+            as forceloaded_item_display run function ./modify with storage rc_forever_projectiles:storage temp:
                 $data modify entity @s transformation set value [$(temp0)f,0f,0f,0f,$(temp1)f,0f,0f,0f,$(temp2)f,0f,0f,0f,0f,0f,0f,1f]
                 store result score $temp_motion rc_forever_projectiles.data run data get entity @s transformation.scale[0] 1000
             scoreboard players operation $temp_motion rc_forever_projectiles.data *= #5 rc_forever_projectiles.data
