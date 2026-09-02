@@ -1,7 +1,5 @@
 function ~/kill_old_item_display:
-    append function_tag load:post_load:
-        values: 
-            -   (~/)
+    append function_tag load:post_load {"values":[(~/)]}
     
     schedule function ~/delayed_1 5s:
         store result score #origin_loaded rc_forever_projectiles.data run forceload query 0 0

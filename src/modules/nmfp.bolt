@@ -3,10 +3,6 @@ import re
 
 v_major, v_minor, v_patch = ctx.project_version.split(".")
 
-append function_tag load:load:
-    values: 
-        -   (./init)
-
 # ascii runcows = 114, 117, 110, 99, 111, 119, 115
 # HEX = 72 75 6E 63 6F 77 73
 # multiply each by the characters remaining
@@ -39,6 +35,8 @@ for projectile in ctx.meta.nmfp.affected_projectiles:
 
 
 function ./init:
+    append function_tag load:load {"values":[(~/)]}
+
     scoreboard players set rc_forever_projectiles load.status v_major
     scoreboard players set rc_forever_projectiles_minor load.status v_minor
 
