@@ -38,17 +38,17 @@ function ./init:
     scoreboard objectives add rc_forever_projectiles.data dummy
     scoreboard objectives add rc_forever_projectiles.distance dummy
 
-    unless score version rc_forever_projectiles.data matches 1.. run function ./reset_config:
-        scoreboard players set version rc_forever_projectiles.data 1
+    unless score version rc_forever_projectiles.data matches 2.. run function ./reset_config:
+        scoreboard players set version rc_forever_projectiles.data 2
         for projectile in projectiles.values():
             raw f"# {projectile.display_name}"
-            scoreboard players set projectile.toggle_config_score rc_forever_projectiles.config 1
-            scoreboard players set projectile.distance_config_score rc_forever_projectiles.config 256
+            unless score projectile.toggle_config_score rc_forever_projectiles.config matches 0..1 run scoreboard players set projectile.toggle_config_score rc_forever_projectiles.config 1
+            unless score projectile.distance_config_score rc_forever_projectiles.config matches 0.. run scoreboard players set projectile.distance_config_score rc_forever_projectiles.config 256
         
         raw # constants
         scoreboard players set #1000 rc_forever_projectiles.data 1000
         
-        raw # store config
+        raw # store config macros
         storage_config_macros_list = []
         for projectile in projectiles.values():
             storage_config_macros_list.append(
