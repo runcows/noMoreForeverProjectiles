@@ -2,6 +2,7 @@ id: rc_forever_projectiles
 name: No More Forever Projectiles
 author: runcows
 description: Arrows and Tridents can break more blocks!
+minecraft: "26.3"
 
 version: 1.2.3
 
@@ -15,6 +16,7 @@ data_pack:
   zipped: false
 
 require:
+  - plugins.26_3_support
   - plugins.output.clear
   - beet.contrib.model_merging
   - beet.contrib.copy_files
@@ -29,10 +31,7 @@ pipeline:
 
 meta:
   supported_versions: [
-    "26.1",
-    "26.1.1",
-    "26.1.2",
-    "26.2"
+    "26.3-pre-1"
   ]
   copy_files:
     data_pack:
