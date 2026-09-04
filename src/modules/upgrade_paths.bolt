@@ -1,9 +1,20 @@
 function ~/kill_old_item_display:
     append function_tag load:post_load {"values":[(~/)]}
     
+    # Kill ancient item display
+    # From pre-forceloaded chunk
     schedule function ~/delayed_1 5s:
         store result score #origin_loaded rc_forever_projectiles.data run forceload query 0 0
         if score #origin_loaded rc_forever_projectiles.data matches 0 run forceload add 0 0
     schedule function ~/delayed_2 10s:
         positioned 0. 0 0. run kill @e[type=item_display,tag=rc_forever_projectiles.origin,distance=..0.1,limit=1]
         if score #origin_loaded rc_forever_projectiles.data matches 0 run forceload remove 0 0
+
+    # Delete forceloaded chunk and item display
+    # Not needed due to number providers (26.3)
+    unless score #forceloaded_chunk rc_forever_projectiles.data matches -1.. run schedule function ~/delayed_3 15s:
+        store result score #forceloaded_chunk rc_forever_projectiles.data run forceload query 29999999 3132
+        if score #forceloaded_chunk rc_forever_projectiles.data matches 0 run return 0
+        store result score #removed_display rc_forever_projectiles.data run kill 72756E63-6F77-73-1D-F04CE104D
+        if score #removed_display rc_forever_projectiles.data matches 1 run forceload remove 29999999 3132
+

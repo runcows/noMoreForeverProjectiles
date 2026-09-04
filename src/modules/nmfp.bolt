@@ -2,13 +2,7 @@ from typing import Any
 import re
 
 v_major, v_minor, v_patch = ctx.project_version.split(".")
-
-# ascii runcows = 114, 117, 110, 99, 111, 119, 115
-# HEX = 72 75 6E 63 6F 77 73
-# multiply each by the characters remaining
-# 7*114 + 6*117 + 5*110 + 4*99 + 3*111 + 2*119 + 1*115  =   3132
-forceloaded_item_display = "72756E63-6F77-73-1D-F04CE104D"
-int_runcows = 3132
+TICK_SPEED = 5
 
 class Projectile:
     def __init__(self, id):
@@ -40,10 +34,6 @@ function ./init:
     scoreboard players set rc_forever_projectiles load.status v_major
     scoreboard players set rc_forever_projectiles_minor load.status v_minor
 
-    forceload add 29999999 int_runcows
-    # UUID = 72756E63-6F77-73-1D-F04CE104D      ^ ABOVE
-    summon item_display 29999999 ~ int_runcows {Tags:["rc_forever_projectiles.forceload_item_display"],UUID:[I;1920298595,1870069875,1900559,80613453]}
-
     scoreboard objectives add rc_forever_projectiles.config dummy
     scoreboard objectives add rc_forever_projectiles.data dummy
     scoreboard objectives add rc_forever_projectiles.distance dummy
@@ -56,7 +46,6 @@ function ./init:
             scoreboard players set projectile.distance_config_score rc_forever_projectiles.config 256
         
         raw # constants
-        scoreboard players set #5 rc_forever_projectiles.data 5
         scoreboard players set #1000 rc_forever_projectiles.data 1000
         
         raw # store config
@@ -72,7 +61,7 @@ function ./init:
     schedule function ./calculate_config 2t
 
 function ./tick:
-    schedule function ~/ 5t
+    schedule function ~/ TICK_SPEED
 
     for projectile in projectiles.values():
         name = projectile.name
@@ -83,14 +72,35 @@ function ./tick:
         PATH = ./get_distance + f"/{name}"
         
         if score toggle_config_score rc_forever_projectiles.config matches 1 as @e[type=selector_type,tag=!smithed.entity] run function PATH:
-            data modify storage rc_forever_projectiles:storage temp.temp0 set from entity @s Motion[0]
-            data modify storage rc_forever_projectiles:storage temp.temp1 set from entity @s Motion[1]
-            data modify storage rc_forever_projectiles:storage temp.temp2 set from entity @s Motion[2]
-            as forceloaded_item_display run function ./modify with storage rc_forever_projectiles:storage temp:
-                $data modify entity @s transformation set value [$(temp0)f,0f,0f,0f,$(temp1)f,0f,0f,0f,$(temp2)f,0f,0f,0f,0f,0f,0f,1f]
-                store result score $temp_motion rc_forever_projectiles.data run data get entity @s transformation.scale[0] 1000
-            scoreboard players operation $temp_motion rc_forever_projectiles.data *= #5 rc_forever_projectiles.data
-            scoreboard players operation @s rc_forever_projectiles.distance += $temp_motion rc_forever_projectiles.data
+            data modify storage rc_forever_projectiles:storage temp.Motion set from entity @s Motion
+            context_float_provider rc_forever_projectiles:distance {
+                "type": "minecraft:mul",
+                "inputs": [
+                    (TICK_SPEED * 1000.0),
+                    {
+                        "type": "minecraft:length",
+                        "inputs": [
+                            {
+                                "type": "minecraft:storage",
+                                "storage": "rc_forever_projectiles:storage",
+                                "path": "temp.Motion[0]"
+                            },
+                            {
+                                "type": "minecraft:storage",
+                                "storage": "rc_forever_projectiles:storage",
+                                "path": "temp.Motion[1]"
+                            },
+                            {
+                                "type": "minecraft:storage",
+                                "storage": "rc_forever_projectiles:storage",
+                                "path": "temp.Motion[2]"
+                            }
+                        ]
+                    }
+                ]
+            }
+            store result score $temp_distance rc_forever_projectiles.data run compute default float rc_forever_projectiles:distance
+            scoreboard players operation @s rc_forever_projectiles.distance += $temp_distance rc_forever_projectiles.data
             if score @s rc_forever_projectiles.distance > distance_config_score rc_forever_projectiles.data run kill @s
 
 function ./calculate_config:
