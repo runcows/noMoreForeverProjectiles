@@ -14,7 +14,7 @@ wheels = [
 [[package]]
 name = "beet"
 version = "0.117.0"
-source = { git = "https://github.com/edayot/beet.git?rev=26.3_update#7f29e1825f87bf121ddc454666e5fbc5a821c174" }
+source = { git = "https://github.com/edayot/beet.git?rev=26.3_update#09b0d009e64d4a9933a542ad5caafaca4576856a" }
 dependencies = [
     { name = "click" },
     { name = "click-help-colors" },
@@ -30,7 +30,7 @@ dependencies = [
 [[package]]
 name = "bolt"
 version = "0.50.1"
-source = { git = "https://github.com/edayot/beet.git?subdirectory=packages%2Fbolt&rev=26.3_update#7f29e1825f87bf121ddc454666e5fbc5a821c174" }
+source = { git = "https://github.com/edayot/beet.git?subdirectory=packages%2Fbolt&rev=26.3_update#09b0d009e64d4a9933a542ad5caafaca4576856a" }
 dependencies = [
     { name = "beet" },
     { name = "mecha" },
@@ -349,7 +349,7 @@ wheels = [
 [[package]]
 name = "mecha"
 version = "0.104.1"
-source = { git = "https://github.com/edayot/beet.git?subdirectory=packages%2Fmecha&rev=26.3_update#7f29e1825f87bf121ddc454666e5fbc5a821c174" }
+source = { git = "https://github.com/edayot/beet.git?subdirectory=packages%2Fmecha&rev=26.3_update#09b0d009e64d4a9933a542ad5caafaca4576856a" }
 dependencies = [
     { name = "beet" },
     { name = "tokenstream" },
